@@ -170,13 +170,14 @@ const Content = ({ questions, questionNum, setQuestionNum, nameCate }) => {
                                         {isTrue === true &&
                                             <div className="yes">
                                                 <img className="image-yn" src={yes} alt="yes" width="20" />
-                                                <span><b>Chính xác</b></span>
+                                                <span><b>Món ăn này chính xác</b></span>
                                             </div>
                                         }
                                         {isFalse === true &&
                                             <div className="no">
                                                 <img className="image-yn" src={no} alt="yes" width="20" />
-                                                <span><b>Đáp án chính xác là: {question?.correctAnswer}</b></span>
+                                                <span><b>Món ăn này tên là:</b> </span>
+                                                <span style={{ color: 'crimson' }}><b>{question?.correctAnswer}</b></span>
                                             </div>
                                         }
                                     </div>
