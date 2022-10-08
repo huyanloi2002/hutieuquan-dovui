@@ -3,7 +3,10 @@ import Loader from '../components/Element/Loader';
 import Timer from "./Element/Timer";
 import ModalResult from "./Element/ModalResult";
 import yes from "../assets/yes.png";
-import no from "../assets/no.png"
+import no from "../assets/no.png";
+import { decryptData } from '../utils/utils';
+import useSound from "use-sound";
+import soundcomplete from '../assets/music/soundcomplete.mp3'
 
 
 const Content = ({ questions, questionNum, setQuestionNum, nameCate }) => {
@@ -19,12 +22,15 @@ const Content = ({ questions, questionNum, setQuestionNum, nameCate }) => {
     const [isFalse, setIsFalse] = useState(false);
     const [isEnable, setIsEnable] = useState(false);
 
+    const [soundComplete] = useSound(soundcomplete);
+
     // Nếu tới câu hỏi thứ ăđ sẽ xuất hiện Modal (isOpen=true)
     useEffect(() => {
         if (questionNum > 10) {
             setIsOpen(true)
+            soundComplete()
         }
-    }, [questionNum, questions, setQuestionNum])
+    }, [questionNum, questions, setQuestionNum, soundComplete])
 
     //Câu hỏi ban đầu ở [1] vì ở App câu hỏi đã được set 1 nên phải trừ 1 để bằng 0
     useEffect(() => {
@@ -113,8 +119,10 @@ const Content = ({ questions, questionNum, setQuestionNum, nameCate }) => {
     //Khi click vào button start thì sẽ lấy tất cả câu hỏi lưu trong sessionStorage lên
     const handleStart = () => {
         setIsStart(true)
-        const questionOld = JSON.parse(sessionStorage.getItem('questionArray'));
-        setQuestionsOld(questionOld)
+        let questionArray = sessionStorage.getItem('questionArray');
+        const salt = '6d090796-ecdf-11ea-adc1-0242ac112345';
+        const questionCrypt = decryptData(questionArray, salt);
+        setQuestionsOld(questionCrypt)
     };
     //Quay lại home
     const handelReset = () => {

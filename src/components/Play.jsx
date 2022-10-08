@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Category from '../components/Category';
 import Content from '../components/Content';
+import { encryptData } from "../utils/utils";
 //image
 import VHHH from '../assets/cate/vhhh.png';
 import DA from '../assets/cate/da.png';
@@ -43,8 +44,12 @@ const Play = ({ setUsername, username }) => {
     }, [cate]);
 
     //Lưu câu hỏi vào sessionStorage
+
     useEffect(() => {
-        sessionStorage.setItem('questionArray', JSON.stringify(questions))
+
+        const salt = '6d090796-ecdf-11ea-adc1-0242ac112345';
+        const encryptedData = encryptData(questions, salt);
+        sessionStorage.setItem('questionArray', encryptedData)
     }, [questions])
 
     return (
